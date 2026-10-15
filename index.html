@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IGCSE ICT - Modelling Applications & Computer Modelling Quiz (20 MCQs)</title>
+    <style>
+        :root {
+            --bg-main: #090d16;
+            --bg-card: #131d31;
+            --border-color: #223354;
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        header {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        header h1 {
+            color: var(--accent);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .quiz-status {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .score-pill {
+            background-color: #0c4a6e;
+            color: #7dd3fc;
+            padding: 0.35rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid #0284c7;
+        }
+
+        .card {
+            width: 100%;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 1.25rem;
+            padding: 2rem;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #f1f5f9;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .option-btn {
+            width: 100%;
+            text-align: left;
+            background-color: #1e293b;
+            color: var(--text-main);
+            padding: 1rem 1.25rem;
+            border-radius: 0.85rem;
+            border: 1px solid #334155;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background-color: #283548;
+            border-color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+        }
+
+        .option-btn.correct {
+            background-color: #064e3b !important;
+            border-color: #059669 !important;
+            color: #ecfdf5 !important;
+        }
+
+        .option-btn.incorrect {
+            background-color: #7f1d1d !important;
+            border-color: #dc2626 !important;
+            color: #fee2e2 !important;
+        }
+
+        .feedback-box {
+            padding: 1.15rem;
+            border-radius: 0.85rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .feedback-box.correct-feedback {
+            background-color: #022c22;
+            border: 1px solid #047857;
+            color: #a7f3d0;
+        }
+
+        .feedback-box.incorrect-feedback {
+            background-color: #450a0a;
+            border: 1px solid #b91c1c;
+            color: #fecdd3;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: #0f172a;
+            font-weight: 700;
+            padding: 0.85rem 1.75rem;
+            border-radius: 0.85rem;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .results-card {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .results-card h2 {
+            font-size: 2.25rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .results-card p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .citation-note {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        footer {
+            background-color: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+            padding: 1rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>IGCSE ICT Practice Quiz</h1>
+        <p>Topics 6.2 Modelling Applications & 6.2.1 Computer Modelling (20 MCQs)</p>
+    </header>
+
+    <main>
+        <div class="quiz-status">
+            <span id="question-counter">Question 1 of 20</span>
+            <span id="score-display" class="score-pill">Score: 0</span>
+        </div>
+
+        <!-- Quiz Container -->
+        <div id="quiz-container" class="card">
+            <div id="question-box" class="question-text">
+                Loading question...
+            </div>
+
+            <div id="options-container" class="options-list">
+                <!-- Options populated dynamically -->
+            </div>
+
+            <div id="feedback-box" class="feedback-box hidden">
+                <!-- Feedback populated dynamically -->
+            </div>
+
+            <div style="display: flex; justify-content: flex-end;">
+                <button id="next-btn" onclick="nextQuestion()" class="btn-primary hidden">Next Question</button>
+            </div>
+        </div>
+
+        <!-- Results Container -->
+        <div id="results-container" class="card results-card hidden">
+            <h2>Quiz Completed! 🎉</h2>
+            <p id="final-score">You scored X out of 20</p>
+            <button onclick="restartQuiz()" class="btn-primary">Restart Quiz</button>
+        </div>
+    </main>
+
+    <footer>
+        IGCSE ICT Revision &bull; Computer Modelling
+    </footer>
+
+    <script>
+        const questions = [
+            {
+                question: "What is a computer model?",
+                options: [
+                    { text: "A computer-based representation of a real-world system, process, or scenario used to study its behavior and predict outcomes", isCorrect: true, rationale: "Computer models simulate real-world systems mathematically or logically to test scenarios." },
+                    { text: "A physical plastic scale model of a building or bridge", isCorrect: false, rationale: "This describes physical architectural models, not computer simulations." },
+                    { text: "A spreadsheet used solely for printing office invoices", isCorrect: false, rationale: "This describes basic billing, not complex system modeling." },
+                    { text: "An internal computer processor microchip", isCorrect: false, rationale: "This describes a CPU." }
+                ]
+            },
+            {
+                question: "Why do organizations use computer models instead of testing things in the real world?",
+                options: [
+                    { text: "It is safer, cheaper, faster, and allows testing of dangerous or hypothetical scenarios without real-world risks", isCorrect: true, rationale: "Simulations prevent physical danger, lower costs, and speed up experimentation." },
+                    { text: "Because real-world testing is illegal in all countries", isCorrect: false, rationale: "Real testing is legal but can be dangerous, expensive, or impractical." },
+                    { text: "Because computer models require zero processing power", isCorrect: false, rationale: "Complex models require significant computing power." },
+                    { text: "Because computer models are 100% infallible and never make errors", isCorrect: true.split()[0] === 'false' && true, rationale: "Models are only as accurate as their programming and underlying assumptions." }
+                ]
+            },
+            {
+                question: "What is 'what-if' analysis in computer modeling (such as using spreadsheets)?",
+                options: [
+                    { text: "Changing input variables in a model to see how those changes affect the predicted output results", isCorrect: true, rationale: "What-if analysis allows users to test different scenarios by altering inputs and observing outcomes." },
+                    { text: "Asking philosophical questions about computer ethics", isCorrect: false, rationale: "This is ICT ethics, not spreadsheet modeling." },
+                    { text: "Checking network router firewall security settings", isCorrect: false, rationale: "This is network administration." },
+                    { text: "Printing out paper test reports", isCorrect: false, rationale: "This is printing." }
+                ]
+            },
+            {
+                question: "What are typical real-world examples of computer modeling applications?",
+                options: [
+                    { text: "Flight simulators, weather forecasting, financial profit/loss forecasting, bridge stress testing, and nuclear reactor simulations", isCorrect: true, rationale: "Models simulate complex, dangerous, or costly real-world environments like weather and aviation." },
+                    { text: "Scanning supermarket barcodes at checkout tills", isCorrect: false, rationale: "This is point-of-sale data entry." },
+                    { text: "Typing essays using word processing software", isCorrect: false, rationale: "This is document creation." },
+                    { text: "Playing offline arcade video games", isCorrect: false, rationale: "Gaming is for entertainment rather than system modeling." }
+                ]
+            },
+            {
+                question: "What is a flight simulator used for in pilot training?",
+                options: [
+                    { text: "A computerized model of an aircraft that mimics real flight physics, weather, and cockpit controls, allowing pilots to practice safely", isCorrect: true, rationale: "Flight simulators train pilots for emergency procedures and flying conditions without risking aircraft or lives." },
+                    { text: "A video game console used exclusively for playing arcade racing games", isCorrect: false, rationale: "Simulators are professional training models, not casual arcade games." },
+                    { text: "An airport luggage scanning machine", isCorrect: false, rationale: "This is baggage security screening." },
+                    { text: "An air traffic control radar terminal", isCorrect: false, rationale: "This monitors active airspace, it does not train pilots." }
+                ]
+            },
+            {
+                question: "How do weather forecasting computer models work?",
+                options: [
+                    { text: "By processing vast amounts of meteorological sensor data (temperature, pressure, wind speed) through mathematical equations to predict future weather patterns", isCorrect: true, rationale: "Meteorological models run complex equations on supercomputers to forecast atmospheric conditions." },
+                    { text: "By consulting astrological star charts and horoscopes", isCorrect: false, rationale: "Weather forecasting is scientific meteorology, not astrology." },
+                    { text: "By printing paper almanac books", isCorrect: false, rationale: "This is book publishing." },
+                    { text: "By measuring room humidity in a school greenhouse", isCorrect: false, rationale: "This is local environmental monitoring." }
+                ]
+            },
+            {
+                question: "What is financial modeling used for in business?",
+                options: [
+                    { text: "To simulate business profits, cash flows, and expenses under different economic conditions to aid strategic decision-making", isCorrect: true, rationale: "Financial models help businesses forecast future budgets and evaluate investment risks." },
+                    { text: "To count physical coins inside cash register tills", isCorrect: false, rationale: "This is cash counting." },
+                    { text: "To print out customer paper receipts", isCorrect: false, rationale: "This is receipt printing." },
+                    { text: "To design website graphics using Photoshop", isCorrect: false, rationale: "This is graphic design." }
+                ]
+            },
+            {
+                question: "What are the limitations or risks of relying on computer models?",
+                options: [
+                    { text: "Models are only as accurate as the data and rules programmed into them; if assumptions are flawed, predictions will be incorrect ('Garbage In, Garbage Out')", isCorrect: true, rationale: "Flawed programming or inaccurate input data leads to faulty simulation results." },
+                    { text: "Computer models consume zero electricity and never crash", isCorrect: false, rationale: "Complex simulations require powerful computer systems." },
+                    { text: "Computer models can physically predict the exact future with 100% infallible certainty", isCorrect: false, rationale: "Models provide estimates and probabilities, not absolute certainties." },
+                    { text: "Computer models require manual paper calculations", isCorrect: false, rationale: "Models are automated by software." }
+                ]
+            },
+            {
+                question: "What is 'Garbage In, Garbage Out' (GIGO) in computer modeling?",
+                options: [
+                    { text: "The principle that if flawed, inaccurate, or biased data is entered into a computer model, the resulting output predictions will also be worthless or incorrect", isCorrect: true, rationale: "GIGO highlights that output quality depends entirely on input data quality." },
+                    { text: "A software tool for cleaning junk files off hard disk drives", isCorrect: false, rationale: "This describes disk cleanup utilities." },
+                    { text: "An automated recycling plant sorting machine", isCorrect: false, rationale: "This is waste management automation." },
+                    { text: "A networking error caused by broken Ethernet cables", isCorrect: false, rationale: "This is packet loss." }
+                ]
+            },
+            {
+                question: "How do computer models assist structural engineers when designing bridges or skyscrapers?",
+                options: [
+                    { text: "By simulating stress, wind loads, earthquakes, and weight distribution digitally to test structural integrity before physical construction", isCorrect: true, rationale: "Digital stress models reveal structural weaknesses virtually, preventing costly or catastrophic building failures." },
+                    { text: "By physically smashing real steel bridges with hammers", isCorrect: false, rationale: "Physical destruction tests are expensive and dangerous; digital models test them virtually." },
+                    { text: "By printing paper blueprint sketches on inkjet printers", isCorrect: false, rationale: "Blueprints are output drawings, not structural stress simulations." },
+                    { text: "By measuring ambient office temperature", isCorrect: false, rationale: "This is environmental sensing." }
+                ]
+            },
+            {
+                question: "What is a major advantage of using spreadsheets for simple computer models?",
+                options: [
+                    { text: "Built-in formula functions, automated recalculation, and easy creation of what-if scenarios and charts", isCorrect: true, rationale: "Spreadsheet software provides flexible formula calculation engines ideal for financial and mathematical modeling." },
+                    { text: "Absolute immunity to typing errors or formula mistakes", isCorrect: false, rationale: "Users can easily make formula or data entry errors." },
+                    { text: "Requirement for advanced C++ programming degrees", isCorrect: false, rationale: "Spreadsheets are user-friendly without requiring expert programming." },
+                    { text: "Inability to process numbers", isCorrect: false, rationale: "Spreadsheets process numerical data." }
+                ]
+            },
+            {
+                question: "How do epidemic and disease spread models help governments during public health crises?",
+                options: [
+                    { text: "By simulating how infections transmit across populations, allowing health authorities to test the impact of lockdowns, vaccination rates, and hospital capacity", isCorrect: true, rationale: "Epidemiological models simulate outbreak trajectories to guide public health interventions." },
+                    { text: "By curing infected patients instantly via computer screens", isCorrect: false, rationale: "Computer models simulate data; they cannot provide medical cures." },
+                    { text: "By printing out paper hospital medical charts", isCorrect: false, rationale: "This is administrative printing." },
+                    { text: "By scanning patient barcodes at pharmacy counters", isCorrect: false, rationale: "This is medication dispensing." }
+                ]
+            },
+            {
+                question: "What is traffic flow modelling used for in urban city planning?",
+                options: [
+                    { text: "To simulate vehicle movement, bottleneck formation, and traffic light timings across city grids to optimize road layouts and reduce congestion", isCorrect: true, rationale: "Traffic simulations help urban planners design better road networks and traffic light synchronizations." },
+                    { text: "To drive cars automatically without human drivers", isCorrect: false, rationale: "This describes autonomous vehicle AI control, not city traffic simulation modeling." },
+                    { text: "To print out paper driver's license cards", isCorrect: false, rationale: "This is administrative card printing." },
+                    { text: "To measure tire air pressure in parked cars", isCorrect: false, rationale: "This is sensor monitoring." }
+                ]
+            },
+            {
+                question: "Why are computer models particularly useful for studying climate change and global warming?",
+                options: [
+                    { text: "Because Earth's climate system is too massive and complex to experiment on in the real world, making computer simulation the only viable way to test future scenarios", isCorrect: true, rationale: "Global climate experiments cannot be run on the real planet, so supercomputers model atmospheric and oceanic interactions." },
+                    { text: "Because climate change only exists inside computer monitors", isCorrect: false, rationale: "Climate change is a real-world environmental crisis." },
+                    { text: "Because weather data never changes over time", isCorrect: false, rationale: "Weather data is dynamic and constantly changing." },
+                    { text: "Because computer models require zero data inputs", isCorrect: false, rationale: "Climate models require massive meteorological dataset inputs." }
+                ]
+            },
+            {
+                question: "What is a 'variable' in the context of a computer spreadsheet model?",
+                options: [
+                    { text: "A factor or input value that can be changed within the model to observe how it alters the output results", isCorrect: true, rationale: "Variables represent changeable inputs (e.g., price, interest rate, temperature) in a simulation model." },
+                    { text: "A permanent unchangeable mathematical constant like Pi", isCorrect: false, rationale: "Constants do not change, whereas variables do." },
+                    { text: "A hardware cable connecting computers to switches", isCorrect: false, rationale: "This is network cabling." },
+                    { text: "A computer virus infecting system files", isCorrect: false, rationale: "This is malware." }
+                ]
+            },
+            {
+                question: "What is the difference between a static model and a dynamic computer model?",
+                options: [
+                    { text: "A static model represents a system at a single fixed point in time, whereas a dynamic model simulates how a system changes and evolves continuously over time", isCorrect: true, rationale: "Dynamic models incorporate time progression and feedback loops, unlike static snapshots." },
+                    { text: "A static model runs on paper, while a dynamic model runs on electricity", isCorrect: true.split()[0] === 'false' && true, rationale: "Both are computer models, but dynamic models simulate changing time steps." },
+                    { text: "A static model has moving parts, while a dynamic model is completely stationary", isCorrect: false, rationale: "This is the reverse." },
+                    { text: "There is no difference between static and dynamic models", isCorrect: false, rationale: "Their handling of time evolution differs." }
+                ]
+            },
+            {
+                question: "Why might a computer model of a proposed roller coaster design be preferred over building a full-scale prototype immediately?",
+                options: [
+                    { text: "It saves millions of dollars in construction costs and prevents potentially fatal safety accidents if design flaws exist", isCorrect: true, rationale: "Digital physics simulations test g-forces and track stress safely and economically before physical manufacturing." },
+                    { text: "Because roller coasters cannot be built in the real world", isCorrect: false, rationale: "Roller coasters are built physically after successful digital testing." },
+                    { text: "Because physical steel weighs less than computer data", isCorrect: false, rationale: "Steel is heavy; digital data has no physical mass." },
+                    { text: "Because computer models print out plastic toy models", isCorrect: false, rationale: "This describes 3D printing." }
+                ]
+            },
+            {
+                question: "What is 'monte carlo simulation' in advanced computer modeling?",
+                options: [
+                    { text: "A computational technique that uses random sampling and probability distributions to model the probability of different outcomes in processes with uncertainty", isCorrect: true, rationale: "Monte Carlo simulations run thousands of random input scenarios to evaluate financial risk and statistical probabilities." },
+                    { text: "A casino gambling computer game played in Monaco", isCorrect: false, rationale: "While named after a casino city, it is a serious mathematical modeling technique." },
+                    { text: "A software tool for defragmenting hard disk drives", isCorrect: false, rationale: "This is disk maintenance." },
+                    { text: "A network routing protocol for Wi-Fi routers", isCorrect: false, rationale: "This is network routing." }
+                ]
+            },
+            {
+                question: "How do flight simulators provide realistic training environments for pilots?",
+                options: [
+                    { text: "By using hydraulic motion platforms to simulate physical G-forces, wraparound visual screens, and realistic cockpit flight controls", isCorrect: true, rationale: "Motion platforms and visual displays trick the pilot's senses into feeling real flight motion and environment conditions." },
+                    { text: "By strapping pilots into office chairs in a quiet room with no screens", isCorrect: false, rationale: "This lacks simulation immersion." },
+                    { text: "By playing standard arcade video games on a smartphone", isCorrect: false, rationale: "Smartphones lack cockpit hardware and motion rigs." },
+                    { text: "By printing paper flight manuals", isCorrect: false, rationale: "This is reading, not simulation training." }
+                ]
+            },
+            {
+                question: "Which summary best encapsulates 6.2 / 6.2.1 Computer Modelling in IGCSE ICT?",
+                options: [
+                    { text: "Computer modelling uses digital software simulations to represent real-world systems, enabling safe, cost-effective 'what-if' testing and forecasting across aviation, weather, finance, and engineering, while remaining dependent on accurate input data (GIGO)", isCorrect: true, rationale: "Computer models simulate real-world systems for safe testing and forecasting, though accuracy relies on valid inputs." },
+                    { text: "Computer modelling is an obsolete spreadsheet technique used exclusively for printing paper invoices", isCorrect: false, rationale: "Modelling is a vital simulation tool used across advanced science and industry." },
+                    { text: "Computer modelling requires no computer software or mathematical rules", isCorrect: true.split()[0] === 'false' && true, rationale: "Models rely entirely on mathematical equations and software logic." },
+                    { text: "Computer modelling is identical to anti-malware virus scanning", isCorrect: false, rationale: "Modelling simulates systems, whereas anti-malware protects against malicious software." }
+                ]
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let answered = false;
+
+        const questionCounter = document.getElementById("question-counter");
+        const scoreDisplay = document.getElementById("score-display");
+        const questionBox = document.getElementById("question-box");
+        const optionsContainer = document.getElementById("options-container");
+        const feedbackBox = document.getElementById("feedback-box");
+        const nextBtn = document.getElementById("next-btn");
+        const quizContainer = document.getElementById("quiz-container");
+        const resultsContainer = document.getElementById("results-container");
+        const finalScore = document.getElementById("final-score");
+
+        function loadQuestion() {
+            answered = false;
+            feedbackBox.classList.add("hidden");
+            nextBtn.classList.add("hidden");
+            
+            const q = questions[currentQuestionIndex];
+            questionCounter.textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+            scoreDisplay.textContent = `Score: ${score}`;
+            questionBox.textContent = q.question;
+
+            // Shuffle options array randomly so correct answer is not always first
+            let shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+
+            optionsContainer.innerHTML = "";
+            shuffledOptions.forEach((opt) => {
+                const btn = document.createElement("button");
+                btn.className = "option-btn";
+                btn.textContent = opt.text;
+                btn.onclick = () => selectOption(opt, shuffledOptions);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectOption(selectedOpt, shuffledOptions) {
+            if (answered) return;
+            answered = true;
+
+            const allOptionButtons = optionsContainer.children;
+
+            shuffledOptions.forEach((opt, idx) => {
+                allOptionButtons[idx].disabled = true;
+                if (opt.isCorrect) {
+                    allOptionButtons[idx].classList.add("correct");
+                } else if (opt === selectedOpt && !selectedOpt.isCorrect) {
+                    allOptionButtons[idx].classList.add("incorrect");
+                }
+            });
+
+            feedbackBox.classList.remove("hidden");
+            if (selectedOpt.isCorrect) {
+                score++;
+                scoreDisplay.textContent = `Score: ${score}`;
+                feedbackBox.className = "feedback-box correct-feedback";
+                feedbackBox.innerHTML = `<strong>Correct!</strong> ${selectedOpt.rationale}`;
+            } else {
+                feedbackBox.className = "feedback-box incorrect-feedback";
+                feedbackBox.innerHTML = `<strong>Incorrect.</strong> ${selectedOpt.rationale}`;
+            }
+
+            if (currentQuestionIndex < questions.length - 1) {
+                nextBtn.textContent = "Next Question";
+            } else {
+                nextBtn.textContent = "View Results";
+            }
+            nextBtn.classList.remove("hidden");
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                quizContainer.classList.add("hidden");
+                resultsContainer.classList.remove("hidden");
+                finalScore.textContent = `You scored ${score} out of ${questions.length}`;
+            }
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            resultsContainer.classList.add("hidden");
+            quizContainer.classList.remove("hidden");
+            loadQuestion();
+        }
+
+        // Initialize quiz on load
+        loadQuestion();
+    </script>
+</body>
+</html>
